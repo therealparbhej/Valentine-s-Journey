@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Journey 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            perspective: 1500px;
+        }
+
+        .page-wrapper {
+            position: relative;
+            width: 100%;
+            min-height: 600px;
+            max-height: 90vh;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px 30px;
+            opacity: 0;
+            transform: translateX(100%) scale(0.9);
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .page.active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            z-index: 10;
+        }
+
+        .page.previous {
+            opacity: 0;
+            transform: translateX(-100%) scale(0.9);
+        }
+
+        /* Page 1 - Cover */
+        .page-1 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hearts-decoration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            border-radius: 20px;
+            top: 0;
+            left: 0;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.3;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(5deg); }
+            50% { transform: translateY(0) rotate(0deg); }
+            75% { transform: translateY(-10px) rotate(-5deg); }
+        }
+
+        .main-heart {
+            font-size: clamp(80px, 18vw, 120px);
+            animation: heartbeat 1.5s infinite;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            10% { transform: scale(1.1); }
+            20% { transform: scale(1); }
+            30% { transform: scale(1.15); }
+            40% { transform: scale(1); }
+        }
+
+        .page-title {
+            font-size: clamp(32px, 7vw, 48px);
+            color: white;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
+        }
+
+        .page-subtitle {
+            font-size: clamp(16px, 4vw, 20px);
+            color: rgba(255, 255, 255, 0.95);
+            text-align: center;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .pull-cord-container {
+            position: relative;
+            margin-top: 30px;
+        }
+
+        .cord {
+            width: 3px;
+            height: 80px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 100%);
+            margin: 0 auto 10px;
+            border-radius: 2px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .pull-handle {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            border: 3px solid rgba(245, 87, 108, 0.5);
+        }
+
+        .pull-handle:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .pull-handle:active {
+            transform: scale(0.95) translateY(5px);
+        }
+
+        .pull-handle::after {
+            content: '👇';
+            font-size: 28px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .pull-text {
+            color: white;
+            font-size: clamp(14px, 3.5vw, 16px);
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Page 2 - Reasons */
+        .page-2 {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+
+        .content-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: clamp(24px, 5.5vw, 32px);
+            color: #d63031;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .reason-item {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #e74c3c;
+            animation: slideIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .reason-item:nth-child(1) { animation-delay: 0.1s; }
+        .reason-item:nth-child(2) { animation-delay: 0.2s; }
+        .reason-item:nth-child(3) { animation-delay: 0.3s; }
+        .reason-item:nth-child(4) { animation-delay: 0.4s; }
+        .reason-item:nth-child(5) { animation-delay: 0.5s; }
+
+        .reason-number {
+            font-size: clamp(28px, 6vw, 36px);
+            color: #e74c3c;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .reason-text {
+            font-size: clamp(14px, 3.5vw, 18px);
+            color: #2d3436;
+            line-height: 1.6;
+        }
+
+        /* Page 3 - Quotes */
+        .page-3 {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .quote-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .quote-card:nth-child(2) { animation-delay: 0.2s; }
+        .quote-card:nth-child(3) { animation-delay: 0.4s; }
+        .quote-card:nth-child(4) { animation-delay: 0.6s; }
+
+        .quote-icon {
+            font-size: clamp(40px, 8vw, 60px);
+            color: #fd79a8;
+            opacity: 0.3;
+            position: absolute;
+            top: 10px;
+            left: 15px;
+        }
+
+        .quote-text {
+            font-size: clamp(15px, 3.8vw, 19px);
+            color: #2d3436;
+            font-style: italic;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        .quote-author {
+            font-size: clamp(13px, 3.2vw, 16px);
+            color: #636e72;
+            text-align: right;
+            font-weight: 600;
+        }
+
+        /* Page 4 - Question */
+        .page-4 {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .question {
+            font-size: clamp(28px, 6.5vw, 42px);
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            line-height: 1.4;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .btn {
+            padding: 18px 40px;
+            font-size: clamp(18px, 4.5vw, 24px);
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            font-family: 'Georgia', serif;
+            min-width: 140px;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.15);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-no {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            color: white;
+            position: relative;
+        }
+
+        .btn-no:hover {
+            transform: scale(0.9);
+            opacity: 0.8;
+        }
+
+        /* Navigation */
+        .nav-dots {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: white;
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        .next-btn {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            color: #667eea;
+            padding: 12px 25px;
+            border-radius: 25px;
+            border: none;
+            font-size: clamp(14px, 3.5vw, 16px);
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 50;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .next-btn.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Success Message */
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 90%;
+            max-width: 400px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .message.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .message-text {
+            font-size: clamp(24px, 5.5vw, 36px);
+            color: white;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .celebration {
+            font-size: clamp(60px, 14vw, 90px);
+            margin-bottom: 20px;
+            animation: celebrate 0.8s ease-in-out infinite alternate;
+        }
+
+        @keyframes celebrate {
+            from { transform: rotate(-10deg) scale(1); }
+            to { transform: rotate(10deg) scale(1.1); }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .page {
+                padding: 30px 20px;
+            }
+
+            .next-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 20px;
+            }
+
+            .nav-dots {
+                bottom: 20px;
+            }
+        }
+
+        @media (max-height: 700px) {
+            .page-wrapper {
+                min-height: 500px;
+                max-height: 85vh;
+            }
+
+            .page {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-wrapper">
+            <!-- Page 1: Cover -->
+            <div class="page page-1 active" data-page="1">
+                <div class="hearts-decoration">
+                    <span class="heart" style="top: 10%; left: 10%;">💕</span>
+                    <span class="heart" style="top: 20%; right: 15%; animation-delay: 1s;">❤️</span>
+                    <span class="heart" style="bottom: 15%; left: 20%; animation-delay: 2s;">💖</span>
+                    <span class="heart" style="bottom: 25%; right: 10%; animation-delay: 1.5s;">💗</span>
+                    <span class="heart" style="top: 50%; left: 5%; animation-delay: 0.5s;">💝</span>
+                    <span class="heart" style="top: 60%; right: 5%; animation-delay: 2.5s;">💓</span>
+                </div>
+                
+                <div class="main-heart">💝</div>
+                <h1 class="page-title">A Valentine's Journey</h1>
+                <p class="page-subtitle">For Someone Special</p>
+                
+                <div class="pull-cord-container">
+                    <div class="cord"></div>
+                    <div class="pull-handle" id="pullHandle"></div>
+                    <p class="pull-text">Pull to begin!</p>
+                </div>
+            </div>
+
+            <!-- Page 2: Reasons -->
+            <div class="page page-2" data-page="2">
+                <div class="content-section">
+                    <h2 class="section-title">💕 Why You're Amazing 💕</h2>
+                    
+                    <div class="reason-item">
+                        <div class="reason-number">01.</div>
+                        <div class="reason-text">Your smile lights up every room you walk into, making even the darkest days feel brighter.</div>
+                    </div>
+                    
+                    <div class="reason-item">
+                        <div class="reason-number">02.</div>
+                        <div class="reason-text">The way you care about others shows the beautiful heart you have inside.</div>
+                    </div>
+                    
+                    <div class="reason-item">
+                        <div class="reason-number">03.</div>
+                        <div class="reason-text">Your laughter is my favorite sound in the world, and I never want to stop hearing it.</div>
+                    </div>
+                    
+                    <div class="reason-item">
+                        <div class="reason-number">04.</div>
+                        <div class="reason-text">You make ordinary moments feel extraordinary just by being yourself.</div>
+                    </div>
+                    
+                    <div class="reason-item">
+                        <div class="reason-number">05.</div>
+                        <div class="reason-text">Every day with you is a gift that I treasure more than words can express.</div>
+                    </div>
+                </div>
+                
+                <button class="next-btn" onclick="nextPage()">Next →</button>
+            </div>
+
+            <!-- Page 3: Love Quotes -->
+            <div class="page page-3" data-page="3">
+                <div class="content-section">
+                    <h2 class="section-title">💌 Words of Love 💌</h2>
+                    
+                    <div class="quote-card">
+                        <div class="quote-icon">"</div>
+                        <p class="quote-text">Love is not about how many days, months, or years you have been together. Love is about how much you love each other every single day.</p>
+                        <p class="quote-author">— Unknown</p>
+                    </div>
+                    
+                    <div class="quote-card">
+                        <div class="quote-icon">"</div>
+                        <p class="quote-text">In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine.</p>
+                        <p class="quote-author">— Maya Angelou</p>
+                    </div>
+                    
+                    <div class="quote-card">
+                        <div class="quote-icon">"</div>
+                        <p class="quote-text">You know you're in love when you can't fall asleep because reality is finally better than your dreams.</p>
+                        <p class="quote-author">— Dr. Seuss</p>
+                    </div>
+                    
+                    <div class="quote-card">
+                        <div class="quote-icon">"</div>
+                        <p class="quote-text">I love you not only for what you are, but for what I am when I am with you.</p>
+                        <p class="quote-author">— Roy Croft</p>
+                    </div>
+                </div>
+                
+                <button class="next-btn" onclick="nextPage()">Next →</button>
+            </div>
+
+            <!-- Page 4: The Question -->
+            <div class="page page-4" data-page="4">
+                <div class="hearts-decoration">
+                    <span class="heart" style="top: 10%; left: 10%;">💕</span>
+                    <span class="heart" style="top: 20%; right: 15%; animation-delay: 1s;">❤️</span>
+                    <span class="heart" style="bottom: 15%; left: 20%; animation-delay: 2s;">💖</span>
+                    <span class="heart" style="bottom: 25%; right: 10%; animation-delay: 1.5s;">💗</span>
+                </div>
+                
+                <div class="main-heart">💘</div>
+                <h2 class="question">Will you be my Valentine?</h2>
+                
+                <div class="buttons-container">
+                    <button class="btn btn-yes" id="yesBtn">Yes! 💕</button>
+                    <button class="btn btn-no" id="noBtn">No 😢</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Dots -->
+        <div class="nav-dots">
+            <div class="dot active" onclick="goToPage(1)"></div>
+            <div class="dot" onclick="goToPage(2)"></div>
+            <div class="dot" onclick="goToPage(3)"></div>
+            <div class="dot" onclick="goToPage(4)"></div>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    <div class="message" id="message">
+        <div class="celebration">🎉💕🎊</div>
+        <p class="message-text">Yay! You made my day! 💖</p>
+        <p class="message-text" style="font-size: clamp(16px, 4vw, 20px); margin-top: 15px;">I promise to cherish every moment with you! ✨</p>
+        <div class="celebration">💑✨💝</div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        const totalPages = 4;
+        const pullHandle = document.getElementById('pullHandle');
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const message = document.getElementById('message');
+        const pageWrapper = document.querySelector('.page-wrapper');
+
+        let isDragging = false;
+        let startY = 0;
+        let pullDistance = 0;
+
+        // Pull cord interaction
+        function startPull(e) {
+            if (currentPage !== 1) return;
+            isDragging = true;
+            startY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+            pullHandle.style.transition = 'none';
+        }
+
+        function doPull(e) {
+            if (!isDragging || currentPage !== 1) return;
+            
+            e.preventDefault();
+            const currentY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+            pullDistance = Math.max(0, Math.min(100, currentY - startY));
+            
+            pullHandle.style.transform = `translateY(${pullDistance}px) scale(${1 + pullDistance / 200})`;
+            
+            if (pullDistance > 60) {
+                openCard();
+            }
+        }
+
+        function endPull() {
+            isDragging = false;
+            pullHandle.style.transition = 'all 0.3s ease';
+            pullHandle.style.transform = '';
+        }
+
+        function openCard() {
+            nextPage();
+            isDragging = false;
+            pullHandle.style.transform = '';
+        }
+
+        pullHandle.addEventListener('mousedown', startPull);
+        document.addEventListener('mousemove', doPull);
+        document.addEventListener('mouseup', endPull);
+
+        pullHandle.addEventListener('touchstart', startPull, { passive: true });
+        document.addEventListener('touchmove', doPull, { passive: false });
+        document.addEventListener('touchend', endPull);
+
+        pullHandle.addEventListener('click', (e) => {
+            if (pullDistance < 10 && currentPage === 1) {
+                openCard();
+            }
+        });
+
+        // Page navigation
+        function nextPage() {
+            if (currentPage < totalPages) {
+                goToPage(currentPage + 1);
+            }
+        }
+
+        function goToPage(pageNum) {
+            if (pageNum < 1 || pageNum > totalPages) return;
+            
+            const currentPageEl = document.querySelector(`.page[data-page="${currentPage}"]`);
+            const nextPageEl = document.querySelector(`.page[data-page="${pageNum}"]`);
+            
+            currentPageEl.classList.remove('active');
+            currentPageEl.classList.add('previous');
+            
+            setTimeout(() => {
+                currentPageEl.classList.remove('previous');
+            }, 600);
+            
+            nextPageEl.classList.add('active');
+            
+            // Update dots
+            document.querySelectorAll('.dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index + 1 === pageNum);
+            });
+            
+            currentPage = pageNum;
+        }
+
+        // Yes button
+        yesBtn.addEventListener('click', function() {
+            message.classList.add('show');
+            createConfetti();
+            
+            this.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+        });
+
+        // No button - runs away
+        noBtn.addEventListener('mouseover', function() {
+            const page4 = document.querySelector('.page-4');
+            const maxX = page4.offsetWidth - this.offsetWidth - 60;
+            const maxY = page4.offsetHeight - this.offsetHeight - 100;
+            
+            const randomX = Math.random() * maxX + 30;
+            const randomY = Math.random() * maxY + 50;
+            
+            this.style.position = 'absolute';
+            this.style.left = randomX + 'px';
+            this.style.top = randomY + 'px';
+        });
+
+        noBtn.addEventListener('click', function() {
+            yesBtn.style.transform = 'scale(1.3)';
+            this.textContent = 'Really? 🥺';
+            
+            setTimeout(() => {
+                this.textContent = 'No 😢';
+            }, 1500);
+        });
+
+        // Confetti
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#f0932b', '#eb4d4b', '#6ab04c', '#c44569'];
+            const confettiCount = 60;
+
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.width = Math.random() * 12 + 5 + 'px';
+                    confetti.style.height = Math.random() * 12 + 5 + 'px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * window.innerWidth + 'px';
+                    confetti.style.top = '-20px';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    confetti.style.opacity = '1';
+                    confetti.style.pointerEvents = 'none';
+                    confetti.style.zIndex = '10000';
+                    
+                    const animation = confetti.animate([
+                        { 
+                            transform: 'translateY(0) rotate(0deg)',
+                            opacity: 1
+                        },
+                        { 
+                            transform: `translateY(${window.innerHeight + 20}px) rotate(${Math.random() * 720 - 360}deg)`,
+                            opacity: 0
+                        }
+                    ], {
+                        duration: Math.random() * 2000 + 2000,
+                        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                    });
+
+                    document.body.appendChild(confetti);
+                    
+                    animation.onfinish = () => confetti.remove();
+                }, i * 30);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' && currentPage < totalPages) {
+                nextPage();
+            } else if (e.key === 'ArrowLeft' && currentPage > 1) {
+                goToPage(currentPage - 1);
+            }
+        });
+
+        // Swipe navigation for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        document.addEventListener('touchend', function(e) {
+            if (e.target.closest('.pull-handle')) return;
+            
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            if (touchStartX - touchEndX > swipeThreshold && currentPage < totalPages) {
+                nextPage();
+            } else if (touchEndX - touchStartX > swipeThreshold && currentPage > 1) {
+                goToPage(currentPage - 1);
+            }
+        }
+    </script>
+</body>
+</html>
